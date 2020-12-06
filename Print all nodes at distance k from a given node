@@ -1,0 +1,49 @@
+vector<int> ans;
+    vector<list<int>> g;
+    
+    void dfs(TreeNode *root,TreeNode *t,int p){
+        if(!root)
+            return;
+        if(p!=-1){
+            g[p].push_back(root->val);
+            g[root->val].push_back(p);
+        }
+        dfs(root->left,t,root->val);
+        dfs(root->right,t,root->val);
+    }
+    
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+        if(!root)
+            return {};
+        g.resize(501);
+        int u=target->val;
+        dfs(root,target,-1);
+        vector<bool>vis(501,false);
+        queue<int> q;
+        q.push(u);
+        vis[u]=true;
+        while(!q.empty()){
+            if(!K){
+                while(!q.empty()){
+                    ans.push_back(q.front());
+                    q.pop();
+                }
+                return ans;
+            }
+            
+            int n=q.size();
+            for(int i=0;i<n;++i){
+                int t=q.front();
+                q.pop();
+                for(auto x:g[t]){
+                    if(!vis[x]){
+                        vis[x]=true;
+                        q.push(x);
+                    }
+                }
+            }
+            
+            --K;
+        }
+        return ans;
+    }
