@@ -1,0 +1,57 @@
+void orangesRotting(vector<vector<int>>& grid){
+        int n=grid.size();
+        int m=grid[0].size();
+        queue<pair<int,int>> q;
+        for(int i=0;i<n;i++)
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==2)
+                    q.push({i,j});
+            }
+        int time=0;
+        while(!q.empty())
+        {
+            int i=1,l=q.size();
+            while(i++<=l)
+            {
+                pair<int,int> t=q.front();
+                q.pop();
+                int x=t.first,y=t.second;
+                if(x!=0&&grid[x-1][y]==1)
+                {
+                    grid[x-1][y]=2;
+                    q.push({x-1,y});
+                }
+                if(y!=0&&grid[x][y-1]==1)
+                {
+                    grid[x][y-1]=2;
+                    q.push({x,y-1});
+                }
+                if(x!=n-1&&grid[x+1][y]==1)
+                {
+                    grid[x+1][y]=2;
+                    q.push({x+1,y});
+                }
+                if(y!=m-1&&grid[x][y+1]==1)
+                {
+                    grid[x][y+1]=2;
+                    q.push({x,y+1});
+                }
+            }
+            time++;
+        }
+        if(time)
+            time--;
+        int fresh=0,rot=0;
+        for(int i=0;i<n;++i){
+            for(int j=0;j<m;++j){
+                if(grid[i][j]==1)
+                    fresh++;
+                else if(grid[i][j]==2)
+                    rot++;
+            }
+        }
+        cout<<"time frames: "<<time<<endl;
+        cout<<"fresh oranges: "<<fresh<<endl;
+        cout<<"Rotten oranges: "<<rot<<endl;
+    }
